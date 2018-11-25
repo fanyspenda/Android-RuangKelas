@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".EditProfilActivity"
+    android:orientation="vertical">
+
+        <!--nama di Sini-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:textStyle="bold"
+                android:paddingTop="20dp"
+                android:paddingStart="14dp"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nama       :  "/>
+            <EditText
+                android:id="@+id/evEditNama"
+                android:paddingTop="20dp"
+                android:layout_width="match_parent"
+                android:inputType="text"
+                android:maxLines="1"
+                android:layout_height="wrap_content"
+                android:hint="isi nama"/>
+        </LinearLayout>
+
+        <!--alamat di Sini-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:textStyle="bold"
+                android:paddingLeft="14dp"
+                android:textSize="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Alamat     :  "/>
+            <EditText
+                android:id="@+id/evEditAlamat"
+                android:paddingTop="20dp"
+                android:layout_width="match_parent"
+                android:inputType="text"
+                android:maxLines="3"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:hint="isi alamat"/>
+        </LinearLayout>
+
+        <!--nomor hp di Sini-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:textStyle="bold"
+                android:paddingLeft="10dp"
+                android:textSize="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nomor Hp : "/>
+            <EditText
+                android:id="@+id/evEditNoHp"
+                android:maxLines="1"
+                android:paddingTop="20dp"
+                android:layout_width="match_parent"
+                android:inputType="text"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:hint="isi No HP"/>
+        </LinearLayout>
+
+        <!--username di Sini-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:textStyle="bold"
+                android:paddingStart="14dp"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Username: "/>
+            <EditText
+                android:id="@+id/evEditUsername"
+                android:paddingTop="20dp"
+                android:layout_width="match_parent"
+                android:inputType="text"
+                android:maxLines="3"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:hint="isi username"/>
+        </LinearLayout>
+
+        <!--password di Sini-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:textStyle="bold"
+                android:paddingStart="14dp"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password : "/>
+            <EditText
+                android:id="@+id/evEditPassword"
+                android:paddingTop="20dp"
+                android:layout_width="match_parent"
+                android:inputType="textPassword"
+                android:maxLines="3"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:hint="isi password"/>
+        </LinearLayout>
+
+        <!--confirm password di Sini-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="14dp"
+                android:text="Konfirmasi Password:  "
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/evEditConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="isi Ulang password"
+                android:inputType="textPassword"
+                android:maxLines="3"
+                android:paddingLeft="20dp"
+                android:paddingTop="20dp"
+                android:paddingRight="20dp" />
+        </LinearLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:textColor="#F00"
+            android:paddingTop="15sp"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:text="*jangan ubah Username dan Password jika tidak ingin mengubah username dan password!"/>
+
+        <Button
+            android:id="@+id/btnSimpanProfil"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Simpan Data"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="#FFF"
+            android:background="#18d45c"/>
+    </android.support.constraint.ConstraintLayout>
+</LinearLayout>

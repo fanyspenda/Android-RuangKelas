@@ -17,10 +17,14 @@ public class Main2Activity extends AppCompatActivity {
 
         imgbtnProfil = (ImageButton) findViewById(R.id.imgbtnProfil);
 
+        final String documentId;
+        documentId = getIntent().getStringExtra("documentId");
+
         imgbtnProfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(), ProfilActivity.class);
+                i.putExtra("documentId", documentId);
                 startActivity(i);
             }
         });

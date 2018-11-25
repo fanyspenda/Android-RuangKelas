@@ -32,6 +32,7 @@
             android:text="NIM"/>
 
         <TextView
+            android:id="@+id/tvNim"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=": NIM Di SINI"/>
@@ -53,6 +54,7 @@
             android:text="Nama"/>
 
         <TextView
+            android:id="@+id/tvNama"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=": NAMA Di SINI"/>
@@ -75,6 +77,7 @@
             android:text="No. HP"/>
 
         <TextView
+            android:id="@+id/tvNoHp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=": NOMOR Di SINI"/>
@@ -97,6 +100,7 @@
             android:text="Alamat"/>
 
         <TextView
+            android:id="@+id/tvAlamat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=": Alamat Di SINI"/>
@@ -108,13 +112,15 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/btnEditProfil"
             android:layout_width="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_height="wrap_content"
             android:textSize="20dp"
-            android:background="#FA0"
+            android:background="#AAA"
             android:textColor="#fff"
             android:textStyle="bold"
+            android:clickable="false"
             android:text="Edit"/>
 
         <Button

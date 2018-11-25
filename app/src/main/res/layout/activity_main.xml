@@ -1,55 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:orientation="vertical">
-
-    <TextView
+    android:layout_width="match_parent">
+    <RelativeLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Selamat Datang Di \n Sistem Informasi Jadwal \n Ruang Kelas"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:textSize="20dp"
-        android:textColor="#000"
-        android:layout_marginTop="15dp"/>
+        android:layout_height="match_parent"
+        tools:context=".MainActivity"
+        android:orientation="vertical">
 
-    <ImageView
-        android:layout_marginTop="70dp"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:src="@drawable/logo_polinema"
-        android:layout_gravity="center"
-        />
+        <TextView
+            android:id="@+id/boo"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="Selamat Datang Di Sistem Informasi Jadwal Ruang Kelas"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:textColor="#000"
+            android:layout_marginTop="15dp"/>
 
-    <EditText
-        android:id="@+id/etusername"
-        android:layout_marginTop="30dp"
-        android:layout_width="190dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:hint="username"/>
+        <ImageView
+            android:id="@+id/bii"
+            android:layout_marginTop="70dp"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:src="@drawable/logo_polinema"
+            android:layout_below="@+id/boo"
+            android:layout_gravity="center"
+            />
 
-    <EditText
-        android:id="@+id/etpassword"
-        android:layout_marginTop="10dp"
-        android:layout_width="190dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:hint="password"/>
+        <EditText
+            android:id="@+id/etusername"
+            android:layout_width="190dp"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bii"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:hint="username"
+            android:inputType="text"
+            android:maxLines="1" />
 
-    <Button
-        android:id="@+id/btnlogin"
-        android:layout_marginTop="20dp"
-        android:layout_width="190dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="#FFF"
-        android:textStyle="bold"
-        android:text="LOGIN"
-        android:background="#18d45c"/>
+        <EditText
+            android:id="@+id/etpassword"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_below="@+id/etusername"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:hint="password"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:password="true" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/btnlogin"
+            android:layout_marginTop="20dp"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etpassword"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:textColor="#FFF"
+            android:textStyle="bold"
+            android:text="LOGIN"
+            android:background="#18d45c"/>
+    </RelativeLayout>
+</ScrollView>
