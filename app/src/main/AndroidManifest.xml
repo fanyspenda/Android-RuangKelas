@@ -21,7 +21,8 @@
         <activity android:name=".Main2Activity" />
         <activity android:name=".ProfilActivity" />
         <activity android:name=".DaftarRuangActivity" />
-        <activity android:name=".EditProfilActivity"></activity>
+        <activity android:name=".EditProfilActivity" />
+        <activity android:name=".ListKelasActivity"></activity>
     </application>
 
 </manifest>
