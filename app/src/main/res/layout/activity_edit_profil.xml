@@ -23,6 +23,7 @@
             <EditText
                 android:id="@+id/evEditNama"
                 android:paddingTop="20dp"
+                android:paddingLeft="20dp"
                 android:layout_width="match_parent"
                 android:inputType="text"
                 android:maxLines="1"
@@ -156,9 +157,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
+            android:paddingLeft="20dp"
             android:textColor="#F00"
             android:paddingTop="15sp"
-            android:layout_width="260dp"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:text="*jangan ubah Username dan Password jika tidak ingin mengubah username dan password!"/>
 

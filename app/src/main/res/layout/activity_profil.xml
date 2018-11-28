@@ -113,7 +113,7 @@
 
         <Button
             android:id="@+id/btnEditProfil"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_alignParentBottom="true"
             android:layout_height="wrap_content"
             android:textSize="20dp"
@@ -132,6 +132,6 @@
             android:background="#F30"
             android:textColor="#fff"
             android:textStyle="bold"
-            android:text="Tutup Akun"/>
+            android:text="Keluar "/>
     </RelativeLayout>
 </LinearLayout>
