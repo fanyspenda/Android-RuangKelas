@@ -25,6 +25,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -32,10 +36,17 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+
+import arwinata.org.tubesandro.Class.Mahasiswa;
 
 public class ProfilActivity extends AppCompatActivity {
 
+    Mahasiswa mFoto;
+    StorageReference mStorageRef;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     ImageView imgVUploadFoto;
     TextView tvnim, tvnama, tvalamat, tvnohp;
@@ -62,6 +73,8 @@ public class ProfilActivity extends AppCompatActivity {
         btnEditProfil.setEnabled(false);
 
         imgVUploadFoto = findViewById(R.id.imgvUploadFoto);
+
+        mStorageRef = FirebaseStorage.getInstance().getReference("fotoMahasiswa");
 
         final String documentId = getIntent().getStringExtra("documentId");
 
@@ -168,6 +181,14 @@ public class ProfilActivity extends AppCompatActivity {
 
         //koding dari takePhoto
         if (requestCode == 100 && resultCode == RESULT_OK) {
+            //mendisable gambar agar user tidak bisa mengambil gambar lagi sebelum upload selesai
+            imgVUploadFoto.setEnabled(false);
+
+            //mengupload File
+            //karena FireStore menjalankan method secara Asynchronous, maka...
+            //..method uploadFotoProfil akan berjalan dan baris selanjutnya tetap  berlanjut..
+            //..tanpa menunggu method uploadFotoProfil Selesai
+            uploadFotoProfil(mFileURI);
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
             // rescale bitmap jika aplikasi force close
             // semakin besar ukuran rescale maka image/gambar yang ditampilkan semakin kecil
@@ -205,5 +226,60 @@ public class ProfilActivity extends AppCompatActivity {
             mediaFile.delete();
         }
         return mediaFile;
+    }
+
+    private void uploadFotoProfil(File mFileUri){
+        final String docId = getIntent().getStringExtra("documentId");
+        //cek apakah gambar kosong
+        if(mFileUri!= null){
+
+            //menamai file di Storage Firestore
+            final StorageReference fileRef = mStorageRef.child(
+                    docId+".jpg"
+            );
+
+            //method mengupload file
+            fileRef.putFile(Uri.fromFile(mFileUri))
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(getApplicationContext(), "Gambar Berhasil Diupload!",
+                                    Toast.LENGTH_LONG).show();
+
+                            //mendapatkan URL gambar yang baru diupload
+                            fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    //membuat objek mahasiswa untuk mengupdate data mahasiswa yang memiliki...
+                                    //..id Dokumen tertentu yang barusaja ganti profil
+                                    mFoto = new Mahasiswa(uri.toString());
+                                    //membuat variable hashmap karena method set hanya menerima parameter hashmap
+                                    Map<String, Object> foto = new HashMap<>();
+
+                                    //menambahkan data imageUrl ke data mahasiswa
+                                    foto.put("imageUrl", mFoto.getUrlGambar());
+
+                                    //me-Merge data (data yang tidak memiliki kolom imageUrl, akan ditambahkan kolomnya)
+                                    //..yang sudah ada, akan diupdate
+                                    //apabila document tidak ada, maka akan membuat document baru dan hanya..
+                                    //..memiliki 1 data yaitu imageUrl saja
+                                    db.collection("mahasiswa").document(docId).set(foto, SetOptions.merge());
+                                    Toast.makeText(getApplicationContext(), "Gambar Berhasil Diupload!",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(), e.getMessage(),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    });
+        }else {
+            Toast.makeText(this, "Gambar tidak Ditemukan!", Toast.LENGTH_LONG).show();
+        }
+        imgVUploadFoto.setEnabled(true);
     }
 }
