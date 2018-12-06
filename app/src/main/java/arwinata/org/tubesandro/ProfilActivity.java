@@ -2,11 +2,15 @@ package arwinata.org.tubesandro;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.Image;
 import android.net.Uri;
+import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.ActionMode;
@@ -21,8 +25,14 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class ProfilActivity extends AppCompatActivity {
 
@@ -31,9 +41,12 @@ public class ProfilActivity extends AppCompatActivity {
     TextView tvnim, tvnama, tvalamat, tvnohp;
     Button btnEditProfil;
     String username, password;
+    File simpanGambarDir = null;
+    File mFileURI;
     public static final int PICK_IMAGE_REQUEST = 1;
 
-    private Uri mImageUri;
+    //variable untuk fungsi imageChooser
+//    private Uri mImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +68,7 @@ public class ProfilActivity extends AppCompatActivity {
         //load Data
         loadDataMahasiswa(documentId);
 
+        //menuju Activity EditProfil
         btnEditProfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,11 +76,12 @@ public class ProfilActivity extends AppCompatActivity {
             }
         });
 
+        //membuka kamera
         imgVUploadFoto.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                imageChooser();
+                takePhoto();
             }
         });
     }
@@ -115,16 +130,28 @@ public class ProfilActivity extends AppCompatActivity {
         startActivity(editProfil_Intent);
     }
 
-    public void imageChooser(){
-//        //membuat intent dari kamera untuk mengambil gambar
-//        Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        startActivityForResult(camera_intent, PICK_IMAGE_REQUEST);
+//    public void imageChooser(){
+//        //mengambil gambar dari galeri
+//        Intent i = new Intent();
+//        i.setType("image/*");
+//        i.setAction(Intent.ACTION_GET_CONTENT);
+//        startActivityForResult(i, PICK_IMAGE_REQUEST);
+//    }
+    //mengambil foto
+    private void takePhoto(){
+        //membuat intent dari kamera untuk mengambil gambar
 
-        //mengambil gambar dari galeri
-        Intent i = new Intent();
-        i.setType("image/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(i, PICK_IMAGE_REQUEST);
+        //mengallow access kamera
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
+        Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //jika kamera mengambil gambar
+        if(camera_intent.resolveActivity(getPackageManager())!=null){
+            mFileURI = getNamaPhoto();
+            camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mFileURI));
+            startActivityForResult(camera_intent, 100);
+        }
     }
 
     //method ini dijalankan ketika startActivityForResult berjalan
@@ -132,19 +159,51 @@ public class ProfilActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-//        //menyimpan gambar dari kamera ke imageView
-//        if(data.getExtras().get("data")!=null){
-//            Bitmap bm = (Bitmap) data.getExtras().get("data");
-//            imgVUploadFoto.setImageBitmap(bm);
+//        //(koding dari imageChooser) menyimpan gambar dari galeri ke ImageView
+//        if(requestCode == PICK_IMAGE_REQUEST && resultCode==RESULT_OK
+//                && data != null && data.getData() != null){
+//            mImageUri = data.getData();
+//            imgVUploadFoto.setImageURI(mImageUri);
 //        }
 
-        //menyimpan gambar dari galeri ke ImageView
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode==RESULT_OK
-                && data != null && data.getData() != null){
-            mImageUri = data.getData();
-            imgVUploadFoto.setImageURI(mImageUri);
+        //koding dari takePhoto
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            // rescale bitmap jika aplikasi force close
+            // semakin besar ukuran rescale maka image/gambar yang ditampilkan semakin kecil
+            bmOptions.inSampleSize = 4;
+            Bitmap bitmap = BitmapFactory.decodeFile(mFileURI.getPath(), bmOptions);
+
+            Picasso.get().load(mFileURI).
+                    memoryPolicy(MemoryPolicy.NO_CACHE).
+                    networkPolicy(NetworkPolicy.NO_CACHE).
+                    resize(120, 120).
+                    centerCrop().
+                    into(imgVUploadFoto);
+        }
+    }
+
+    //fungsi untuk mengset Direktori penyimpanan foto dan penamaan file
+    private File getNamaPhoto(){
+        //meng-get lokasi memori eksternal untuk dijadikan tempat menyimpan foto
+        simpanGambarDir = new File(Environment.getExternalStoragePublicDirectory
+                (Environment.DIRECTORY_PICTURES), "RuangKelasPolinema");
+
+        //cek apakah sudah ada folder.
+        if(!simpanGambarDir.exists()){
+            //jika gagal membuat direktori, tampilkan toast
+            if(!simpanGambarDir.mkdirs()){
+                Toast.makeText(getApplicationContext(), "Gagal membuat Direktori!",
+                        Toast.LENGTH_LONG).show();
+            }
         }
 
-
+        File mediaFile = null;
+        //membuat file kosong pada direktori
+        mediaFile = new File(simpanGambarDir.getPath() + File.separator + "IMG_Profilku.jpg");
+        if (mediaFile.exists()){
+            mediaFile.delete();
+        }
+        return mediaFile;
     }
 }

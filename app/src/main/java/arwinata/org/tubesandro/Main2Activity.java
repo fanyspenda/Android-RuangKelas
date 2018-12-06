@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import arwinata.org.tubesandro.Adapter.GedungAdapter;
+import arwinata.org.tubesandro.Class.Gedung;
 
 public class Main2Activity extends AppCompatActivity {
     private RecyclerView rvGedung;
@@ -47,15 +48,26 @@ public class Main2Activity extends AppCompatActivity {
         mGedung = new ArrayList<>();
         dbGedung = FirebaseFirestore.getInstance().collection("gedung");
 
+        documentId = getIntent().getStringExtra("documentId");
+
+        loadDataGedung();
+
+        imgbtnProfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                menujuLihatProfil(documentId);
+            }
+        });
+    }
+
+    public void loadDataGedung(){
         dbGedung.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                if (queryDocumentSnapshots != null && queryDocumentSnapshots.isEmpty()==false) {
+                if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
                     for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots){
                         Gedung gedung = documentSnapshot.toObject(Gedung.class);
                         mGedung.add(gedung);
-
-                        Toast.makeText(getApplicationContext(), gedung.getImageUrl(), Toast.LENGTH_LONG).show();
                     }
                     gedAdapter = new GedungAdapter(getApplicationContext(), mGedung);
                     rvGedung.setAdapter(gedAdapter);
@@ -64,21 +76,11 @@ public class Main2Activity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Tidak Ada Data", Toast.LENGTH_LONG).show();
                 }
             }
-
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(getApplicationContext(), "Error Mendapatkan Data: " + e, Toast.LENGTH_LONG).show();
                 return;
-            }
-        });
-
-        documentId = getIntent().getStringExtra("documentId");
-
-        imgbtnProfil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                menujuLihatProfil(documentId);
             }
         });
     }

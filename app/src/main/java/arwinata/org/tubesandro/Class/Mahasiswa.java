@@ -1,4 +1,4 @@
-package arwinata.org.tubesandro;
+package arwinata.org.tubesandro.Class;
 
 public class Mahasiswa {
 
@@ -9,7 +9,13 @@ public class Mahasiswa {
     private String password;
     private String nomorhp;
 
+    private String urlGambar;
+
     public Mahasiswa() {
+    }
+
+    public Mahasiswa(String urlGambar) {
+        this.urlGambar = urlGambar;
     }
 
     public Mahasiswa(String nama, String nim,
@@ -60,4 +66,12 @@ public class Mahasiswa {
 
     public String getNomorhp() { return nomorhp; }
     public void setNomorhp(String nomorhp) {this.nomorhp = nomorhp;}
+
+    public String getUrlGambar() {
+        return urlGambar;
+    }
+
+    public void setUrlGambar(String urlGambar) {
+        this.urlGambar = urlGambar;
+    }
 }

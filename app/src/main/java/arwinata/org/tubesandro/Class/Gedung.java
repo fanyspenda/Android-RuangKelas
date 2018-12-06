@@ -1,4 +1,4 @@
-package arwinata.org.tubesandro;
+package arwinata.org.tubesandro.Class;
 
 public class Gedung {
 
