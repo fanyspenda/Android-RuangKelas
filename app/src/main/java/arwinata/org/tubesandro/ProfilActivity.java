@@ -42,13 +42,14 @@ import java.util.Map;
 import java.util.Objects;
 
 import arwinata.org.tubesandro.Class.Mahasiswa;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfilActivity extends AppCompatActivity {
 
     Mahasiswa mFoto;
     StorageReference mStorageRef;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    ImageView imgVUploadFoto;
+    CircleImageView imgVUploadFoto;
     TextView tvnim, tvnama, tvalamat, tvnohp;
     Button btnEditProfil;
     String username, password;
@@ -72,7 +73,7 @@ public class ProfilActivity extends AppCompatActivity {
         btnEditProfil.setClickable(false);
         btnEditProfil.setEnabled(false);
 
-        imgVUploadFoto = findViewById(R.id.imgvUploadFoto);
+        imgVUploadFoto = (CircleImageView) findViewById(R.id.imgvUploadFoto);
 
         mStorageRef = FirebaseStorage.getInstance().getReference("fotoMahasiswa");
 
@@ -80,6 +81,7 @@ public class ProfilActivity extends AppCompatActivity {
 
         //load Data
         loadDataMahasiswa(documentId);
+        loadFotoMahasiswa(documentId);
 
         //menuju Activity EditProfil
         btnEditProfil.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +132,32 @@ public class ProfilActivity extends AppCompatActivity {
 
     }
 
+    public void loadFotoMahasiswa(final String documentId){
+        db.collection("mahasiswa").document(documentId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.get("imageUrl").toString().equals("kosong")){
+                            Toast.makeText(getApplicationContext(),
+                                    "Tidak Ada Foto Profil!", Toast.LENGTH_LONG).show();
+                        }else{
+                            Picasso.get().load(documentSnapshot.get("imageUrl").toString())
+                                    .rotate(90)
+                                    .into(imgVUploadFoto);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(),
+                                "Gagal Memuat Foto Profil!", Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+
     public void keEditProfil(String documentId){
 
         Intent editProfil_Intent = new Intent(getApplicationContext(), EditProfilActivity.class);
@@ -150,11 +178,12 @@ public class ProfilActivity extends AppCompatActivity {
 //        i.setAction(Intent.ACTION_GET_CONTENT);
 //        startActivityForResult(i, PICK_IMAGE_REQUEST);
 //    }
+
     //mengambil foto
     private void takePhoto(){
         //membuat intent dari kamera untuk mengambil gambar
 
-        //mengallow access kamera
+        //mengallow access kamera dan mengabaikan security issue yang terjadi
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
@@ -257,7 +286,7 @@ public class ProfilActivity extends AppCompatActivity {
                                     Map<String, Object> foto = new HashMap<>();
 
                                     //menambahkan data imageUrl ke data mahasiswa
-                                    foto.put("imageUrl", mFoto.getUrlGambar());
+                                    foto.put("imageUrl", mFoto.getImageUrl());
 
                                     //me-Merge data (data yang tidak memiliki kolom imageUrl, akan ditambahkan kolomnya)
                                     //..yang sudah ada, akan diupdate

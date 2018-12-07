@@ -13,33 +13,38 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import arwinata.org.tubesandro.Adapter.GedungAdapter;
+import arwinata.org.tubesandro.Class.CircleTransform;
 import arwinata.org.tubesandro.Class.Gedung;
+import arwinata.org.tubesandro.Class.Mahasiswa;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Main2Activity extends AppCompatActivity {
     private RecyclerView rvGedung;
     private GedungAdapter gedAdapter;
 
     private CollectionReference dbGedung;
+    private CollectionReference dbMahasiswa;
     private List<Gedung> mGedung;
 
-    ImageButton imgbtnProfil;
+    CircleImageView imgbtnProfil;
+    String documentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        imgbtnProfil = (ImageButton) findViewById(R.id.imgbtnProfil);
-
-        final String documentId;
+        imgbtnProfil = (CircleImageView) findViewById(R.id.imgbtnProfil);
 
         rvGedung = findViewById(R.id.rvGedung);
         rvGedung.setHasFixedSize(true);
@@ -47,15 +52,42 @@ public class Main2Activity extends AppCompatActivity {
 
         mGedung = new ArrayList<>();
         dbGedung = FirebaseFirestore.getInstance().collection("gedung");
+        dbMahasiswa = FirebaseFirestore.getInstance().collection("mahasiswa");
 
         documentId = getIntent().getStringExtra("documentId");
 
         loadDataGedung();
+        loadFotoProfil();
 
         imgbtnProfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 menujuLihatProfil(documentId);
+            }
+        });
+    }
+
+    private void loadFotoProfil(){
+        dbMahasiswa.document(documentId).get().
+                addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.get("imageUrl").equals("kosong")){
+                    Toast.makeText(getApplicationContext(),
+                            "Foto Profil Tidak Ada!", Toast.LENGTH_LONG).show();
+                }else {
+                    //mengset gambar ikon agar berbentuk bulat dengan menggunakan Library..
+                    //..CircleImageView di gradle
+                    Picasso.get().load(documentSnapshot.get("imageUrl").toString())
+                            .rotate(90)
+                            .into(imgbtnProfil);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(),
+                        "Gambar Gagal Dimuat!", Toast.LENGTH_LONG).show();
             }
         });
     }
