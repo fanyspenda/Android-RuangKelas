@@ -1,6 +1,7 @@
 package arwinata.org.tubesandro.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import arwinata.org.tubesandro.Class.Ruangan;
 import arwinata.org.tubesandro.DaftarRuangActivity;
+import arwinata.org.tubesandro.JadwalActivity;
 import arwinata.org.tubesandro.R;
 
 //Step 2:
@@ -48,8 +50,11 @@ public class RuangAdapter extends RecyclerView.Adapter<RuangAdapter.RuangViewHol
         holder.namaRuang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "Mengklik Ruang "+ruanganItem.getNama(),
-                        Toast.LENGTH_SHORT).show();
+                Intent jadwalIntent = new Intent(mContext, JadwalActivity.class);
+                jadwalIntent.putExtra("namaRuang", ruanganItem.getNama());
+                jadwalIntent.putExtra("lantai", ruanganItem.getLantai());
+                jadwalIntent.putExtra("imageJadwal", ruanganItem.getImageJadwal());
+                mContext.startActivity(jadwalIntent);
             }
         });
     }

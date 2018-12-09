@@ -9,24 +9,26 @@ public class Mahasiswa {
     private String password;
     private String nomorhp;
 
-    private String urlGambar;
+    private String imageUrl;
 
     public Mahasiswa() {
     }
 
-    public Mahasiswa(String urlGambar) {
-        this.urlGambar = urlGambar;
+    public Mahasiswa(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Mahasiswa(String nama, String nim,
                      String alamat, String username,
-                     String password, String nomorhp) {
+                     String password, String nomorhp,
+                     String imageUrl) {
         this.nama = nama;
         this.nim = nim;
         this.alamat = alamat;
         this.username = username;
         this.password = password;
         this.nomorhp = nomorhp;
+        this.imageUrl = imageUrl;
     }
 
     public String getNama() {
@@ -67,11 +69,6 @@ public class Mahasiswa {
     public String getNomorhp() { return nomorhp; }
     public void setNomorhp(String nomorhp) {this.nomorhp = nomorhp;}
 
-    public String getUrlGambar() {
-        return urlGambar;
-    }
-
-    public void setUrlGambar(String urlGambar) {
-        this.urlGambar = urlGambar;
-    }
+    public String getImageUrl() {return imageUrl;}
+    public void setImageUrl(String imageUrl) {this.imageUrl = imageUrl;}
 }

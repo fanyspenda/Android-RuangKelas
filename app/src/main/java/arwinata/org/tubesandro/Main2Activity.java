@@ -23,6 +23,7 @@ import java.util.List;
 
 import arwinata.org.tubesandro.Adapter.GedungAdapter;
 import arwinata.org.tubesandro.Class.Gedung;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Main2Activity extends AppCompatActivity {
@@ -36,6 +37,8 @@ public class Main2Activity extends AppCompatActivity {
     String documentIdMahasiswa;
 
     CircleImageView imgbtnProfil;
+
+    String documentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,15 +68,15 @@ public class Main2Activity extends AppCompatActivity {
         });
     }
 
-    public void loadFotoProfil(String docId){
+    public void loadFotoProfil(String docId) {
         dbMahasiswa.document(docId).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if(documentSnapshot.get("imageUrl").toString().equals("kosong")){
+                        if (documentSnapshot.get("imageUrl").toString().equals("kosong")) {
                             Toast.makeText(getApplicationContext(), "Foto Profil Belum Diset!",
                                     Toast.LENGTH_LONG).show();
-                        }else{
+                        } else {
                             Picasso.get().load(documentSnapshot.get("imageUrl").toString())
                                     .rotate(90)
                                     .into(imgbtnProfil);
@@ -83,7 +86,7 @@ public class Main2Activity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), "Error: "+e.getMessage(),
+                        Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(),
                                 Toast.LENGTH_LONG).show();
                     }
                 });

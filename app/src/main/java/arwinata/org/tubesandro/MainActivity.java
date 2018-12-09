@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
                         String username = m1.getUsername();
                         String password = m1.getPassword();
                         String nomorhp = m1.getNomorhp();
+                        String imageUrl = m1.getImageUrl();
 
                         //mengambil ID dari document
                         String documentId = documentSnapshot.getId();
@@ -93,7 +94,8 @@ public class MainActivity extends AppCompatActivity {
                                 +"\nAlamat: "+alamat
                                 +"\nusername: "+username
                                 +"\npassword: "+password
-                                +"\nnomor hp: "+nomorhp;
+                                +"\nnomor hp: "+nomorhp
+                                +"\nUrl Gambar: "+imageUrl;
 
                         Toast.makeText(getApplicationContext(), data, Toast.LENGTH_LONG).show();
                         goToMain2Activity(documentId);

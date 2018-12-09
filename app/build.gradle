@@ -22,7 +22,7 @@ dependencies {
     //Picasso untuk gambar
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    //Library untuk membuat gambar lingkaran
+    //membuat gambar Bulat
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -31,7 +31,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
     //firestore
-    implementation 'com.google.firebase:firebase-firestore:17.1.3'
+    implementation 'com.google.firebase:firebase-firestore:17.1.4'
     implementation 'com.firebaseui:firebase-ui-database:4.2.1'
     implementation 'com.firebaseui:firebase-ui-firestore:4.2.1'
 
@@ -43,11 +43,11 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.8.0'
 
     //firebase
-    implementation 'com.google.firebase:firebase-core:16.0.5'
+    implementation 'com.google.firebase:firebase-core:16.0.6'
 
     //storage to firebase
     implementation 'com.google.firebase:firebase-storage:16.0.5'
-    implementation 'com.google.firebase:firebase-auth:16.0.5'
+    implementation 'com.google.firebase:firebase-auth:16.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

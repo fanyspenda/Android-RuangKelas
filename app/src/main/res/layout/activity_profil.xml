@@ -134,6 +134,6 @@
             android:background="#F30"
             android:textColor="#fff"
             android:textStyle="bold"
-            android:text="Tutup Akun"/>
+            android:text="Logout"/>
     </RelativeLayout>
 </LinearLayout>
