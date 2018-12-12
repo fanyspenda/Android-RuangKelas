@@ -126,6 +126,7 @@
             android:text="Edit"/>
 
         <Button
+            android:id="@+id/btnLogout"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_height="wrap_content"

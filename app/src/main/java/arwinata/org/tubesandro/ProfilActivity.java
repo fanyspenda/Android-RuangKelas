@@ -47,7 +47,7 @@ public class ProfilActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CircleImageView imgVUploadFoto;
     TextView tvnim, tvnama, tvalamat, tvnohp;
-    Button btnEditProfil;
+    Button btnEditProfil, btnLogout;
     String username, password;
     File simpanGambarDir = null;
     File mFileURI;
@@ -64,6 +64,7 @@ public class ProfilActivity extends AppCompatActivity {
         tvnama = findViewById(R.id.tvNama);
         tvalamat = findViewById(R.id.tvAlamat);
         tvnohp = findViewById(R.id.tvNoHp);
+        btnLogout = findViewById(R.id.btnLogout);
         btnEditProfil = findViewById(R.id.btnEditProfil);
         btnEditProfil.setClickable(false);
         btnEditProfil.setEnabled(false);
@@ -78,7 +79,6 @@ public class ProfilActivity extends AppCompatActivity {
 
         //load Data
         loadDataMahasiswa(documentId);
-        loadFotoMahasiswa(documentId);
 
         //menuju Activity EditProfil
         btnEditProfil.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +94,18 @@ public class ProfilActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 takePhoto();
+            }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent logoutIntent = new Intent(getApplicationContext(), MainActivity.class);
+                logoutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(logoutIntent);
+                Toast.makeText(getApplicationContext(), "Anda Berhasil Logout!",
+                        Toast.LENGTH_LONG).show();
+                ProfilActivity.this.finish();
             }
         });
     }
@@ -132,32 +144,6 @@ public class ProfilActivity extends AppCompatActivity {
                 });
 
     }
-
-    public void loadFotoMahasiswa(final String documentId){
-        db.collection("mahasiswa").document(documentId)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.get("imageUrl").toString().equals("kosong")){
-                            Toast.makeText(getApplicationContext(),
-                                    "Tidak Ada Foto Profil!", Toast.LENGTH_LONG).show();
-                        }else{
-                            Picasso.get().load(documentSnapshot.get("imageUrl").toString())
-                                    .rotate(90)
-                                    .into(imgVUploadFoto);
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(),
-                                "Gagal Memuat Foto Profil!", Toast.LENGTH_LONG).show();
-                    }
-                });
-    }
-
 
     public void keEditProfil(String documentId){
 

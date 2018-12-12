@@ -25,6 +25,9 @@ dependencies {
     //membuat gambar Bulat
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
+    //untuk zooming gambar
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:27.1.1'

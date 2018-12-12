@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.chrisbanes.photoview.PhotoView;
+import com.github.chrisbanes.photoview.PhotoViewAttacher;
 import com.squareup.picasso.Picasso;
 
 public class JadwalActivity extends AppCompatActivity {
 
-    ImageView imgvFotoJadwal;
+    PhotoView imgvFotoJadwal;
     TextView tvNamaRuang, tvLantai;
 
     @Override
@@ -17,7 +19,7 @@ public class JadwalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jadwal);
 
-        imgvFotoJadwal = findViewById(R.id.imgvJadwalRuang);
+        imgvFotoJadwal = (PhotoView) findViewById(R.id.imgvJadwalRuang);
         tvNamaRuang = findViewById(R.id.tvNamaRuang);
         tvLantai = findViewById(R.id.tvLantaiRuang);
 
@@ -29,5 +31,7 @@ public class JadwalActivity extends AppCompatActivity {
         tvLantai.setText(String.valueOf(lantai));
 
         Picasso.get().load(imageJadwal).rotate(90).into(imgvFotoJadwal);
+        PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(imgvFotoJadwal);
+        photoViewAttacher.update();
     }
 }

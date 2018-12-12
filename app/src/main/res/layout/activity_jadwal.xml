@@ -48,11 +48,10 @@
             android:text="Lantai Di Sini"/>
     </LinearLayout>
 
-    <ImageView
+    <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/imgvJadwalRuang"
         android:paddingTop="100dp"
         android:src="@drawable/logo_polinema"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
 </android.support.constraint.ConstraintLayout>
